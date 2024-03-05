@@ -1,1 +1,22 @@
 ---
+version: "3.7"
+
+
+services:
+  gophish:
+    image: gophish/gophish
+    init: true
+    restart: always
+    ports:
+      - target: 3333
+        published: 3333
+        protocol: tcp
+        mode: host
+      - target: 8080
+        published: 3380
+        protocol: tcp
+        mode: host
+    
+
+networks:
+  default:
