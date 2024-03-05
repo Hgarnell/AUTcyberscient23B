@@ -2,12 +2,14 @@
 Dockercontainer
 ## Setup locally
 Clone into this repository.
+ git clone https://github.com/Hgarnell/AUTcyberscient23B.git
 ### Build containers
-    `make build`
+    make build
 ### Run containers
-    `make start`  follow prompts on screen.
+    follow prompts on screen.
+    make start
 ### Check if containers are running
-    `docker ps`
-    `docker logs autcyberscient23b-gophish-1 | grep password `  to get the default username and password for this instance
+    docker ps
+    docker logs autcyberscient23b-gophish-1 | grep password to get the default username and password for this instance
     
 
