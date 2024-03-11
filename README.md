@@ -7,9 +7,10 @@ Clone into this repository.
     make build
 ### Run containers
     follow prompts on screen.
-    make start
-### Check if containers are running
+    make startteln
+### Check if containers are runnings
     docker ps
-    docker logs autcyberscient23b-gophish-1 | grep password to get the default username and password for this instance
+    docker logs autcyberscient23b-gophish-1 | grep password
+     to get the default username and password for this instance
     
 
