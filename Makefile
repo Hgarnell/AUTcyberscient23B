@@ -25,7 +25,7 @@ start:
 	 
 #start - Start postfix script.
 postfix:
-	 sudo chmod u+x init.sh
+	 sudo chmod u+x postfix-init.sh
 	./postfix-init.sh
 
 

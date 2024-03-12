@@ -3,6 +3,8 @@ Dockercontainer
 ## Setup locally
 Clone into this repository.
  git clone https://github.com/Hgarnell/AUTcyberscient23B.git
+ update 
+ sudo apt-get update
 ### Build containers
     run : make build
 ### Run containers
@@ -15,7 +17,7 @@ Clone into this repository.
 
 ### Run Postfix and setup. 
     Before running set the terminal to priveleged mode. (sudo -s)
-    then run: make postfix
+    then run: make -B postfix
 
     
 
