@@ -1,5 +1,10 @@
 #!/bin/bash
-#enter sudo
+#enter sudo exit if not sudo
+if [[ $(id -u) != "0" ]]; then
+    echo "Error: script not running as root or with sudo! Exiting..."
+    exit 1
+fi
+
 #prompt user for hostname
 read -p "Enter a hostname name(Name of your webserver): " user_hostname
 
@@ -41,6 +46,8 @@ echo "--------------------------------------------------------------------------
 echo "Place thie following output as the DKIM key in your DNS server"
 cat /etc/opendkim/keys/$user_hostname/default.txt | awk -F'"' '{print $2}' | tr -d '[:space:]'
 echo "Add this as a new TXT record where the Record name is default._domainkey.$user_hostname"
+cat File as is: /etc/opendkim/keys/$user_hostname/default.txt
+
 
 echo
 
@@ -80,7 +87,6 @@ sudo sed -i '/^#.*\bExternalIgnoreList\b/s/^#//' /etc/opendkim.conf
 #Uncomment InternalHosts
 sudo sed -i '/^#.*\bInternalHosts\b/s/^#//' /etc/opendkim.conf
 # add domain to EOF
-echo "Your line to add" | sudo tee -a /etc/opendkim.conf
 
 echo "AutoRestart            yes" | sudo tee -a /etc/opendkim.conf
 echo "AutoRestartRate        10/1M" | sudo tee -a /etc/opendkim.conf
