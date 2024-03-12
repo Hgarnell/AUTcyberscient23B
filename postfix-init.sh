@@ -67,7 +67,7 @@ read -p "Press Enter to when done..."
 #Uncomment mode
 sudo sed -i '/^#.*\bMode\b/s/^#//' /etc/opendkim.conf
 #Uncomment Subdomains
-sudo sed -i '/^#.*\bSubdomains\b/s/^#//' /etc/opendkim.conf
+sudo sed -i '/^#.*\bSubDomains\b/s/^#//' /etc/opendkim.conf
 
 #Uncomment KeyFile
 sudo sed -i '/^#.*\bKeyFile\b/s/^#//' /etc/opendkim.conf
@@ -94,7 +94,6 @@ echo "SigningTable     refile:/etc/opendkim/signing.table" | sudo tee -a /etc/op
 #Add External and Internal hosts
 echo "ExternalIgnoreList  /etc/opendkim/trusted.hosts" | sudo tee -a /etc/opendkim.conf
 echo "InternalHosts       /etc/opendkim/trusted.hosts" | sudo tee -a /etc/opendkim.conf
-echo "Socket    inet:port@localhost" | sudo tee -a /etc/opendkim.conf
 
 #Edit signing.table
 echo "*@$user_hostname default._domainkey.$user_hostname" | sudo tee /etc/opendkim/signing.table > /dev/null
