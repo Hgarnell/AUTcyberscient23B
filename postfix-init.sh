@@ -8,8 +8,10 @@ sudo bash -c 'awk "/^preserve_hostname: false\$/ {\$2=\"true\"} 1" /etc/cloud/cl
 #Set hostname
 sudo hostnamectl set-hostname $user_hostname
 
+apt-get update
+
 #Install recquired packages
-apt install opendkim opendkim-tools postfix-policyd-spf-python postfix-pcre
+apt-get install opendkim opendkim-tools postfix-policyd-spf-python postfix-pcre
 
 # Add user "postfix" to "opendkim" group
 sudo usermod -G opendkim postfix
@@ -29,4 +31,8 @@ opendkim-genkey -b 2048 -d $user_hostname -D /etc/opendkim/keys/$user_hostname -
 # Change Permission for the keys
 chown opendkim:opendkim /etc/opendkim/keys/$user_hostname/default.private
 
+
 #Remove all the spaces and output the private key
+read "Place thie following output as the DKIM key in your DNS server"
+cat /etc/opendkim/keys/$user_hostname/default.txt | awk -F'"' '{print $2}' | tr -d '[:space:]'
+echo
