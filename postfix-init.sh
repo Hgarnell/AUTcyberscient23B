@@ -37,13 +37,31 @@ sudo postconf -e 'inet_interfaces = loopback-only'
 
 
 #Remove all the spaces and output the DKIM key
-read "Place thie following output as the DKIM key in your DNS server"
+echo "----------------------------------------------------------------------------"
+echo "Place thie following output as the DKIM key in your DNS server"
 cat /etc/opendkim/keys/$user_hostname/default.txt | awk -F'"' '{print $2}' | tr -d '[:space:]'
+echo "Add this as a new TXT record where the Record name is default._domainkey.$user_hostname"
+
 echo
 
 echo " Your Dmarc DNS record is "
 echo "v=DMARC1; p=none; rua=mailto:user@$user_hostname"
-echo "Add this as a new TXT record"
+echo "Add this as a new TXT record where the Record name is _dmarc.$user_hostname"
+echo
+
+echo " Add a Mail service record if you havent already"
+echo "10 mail.$user_hostname"
+echo "Add this as a new MX record where the Record name is $user_hostname"
+
+echo " Add a SPF  record "
+public_ip=$(curl -s ifconfig.me) && echo "v=spf1 $public_ip -all" 
+
+echo "Add this as a new TXT record where the Record name is $user_hostname"
+
+echo "----------------------------------------------------------------------------"
+
+#Prompt user to press Enter
+read -p "Press Enter to when done..."
 
 #Edit config file for dkim
 #Uncomment mode
@@ -111,3 +129,4 @@ echo "non_smtpd_milters = local:opendkim/opendkim.sock" | sudo tee -a /etc/postf
 #Restart Postfix and DKIM
 sudo systemctl restart opendkim 
 sudo systemctl restart postfix 
+systemctl start opendkim
