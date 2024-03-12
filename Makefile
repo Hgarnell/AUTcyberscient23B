@@ -22,6 +22,12 @@ build:
 # start - Start Docker.
 start:
 	 docker-compose up -d
+	 
+#start - Start postfix script.
+postfix:
+	 sudo chmod u+x init.sh
+	./postfix-init.sh
+
 
 # stop - Stop all docker containers
 stop:
