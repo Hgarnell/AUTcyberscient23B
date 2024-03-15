@@ -2,15 +2,16 @@
 
 .PHONY: all help build logs loc up stop down
 
-# make all - Default Target. Does nothing.
+#target: Make =  make all - Default Target. Does nothing.
 all:
 	@echo "Helper commands."
 	@echo "For more information try 'make help'."
 
-# target: help - Display callable targets.
+# target: help = Display callable targets.
 help:
 	@egrep "^# target:" [Mm]akefile
 
+# target: init = Run initial starting script
 init:
 	sudo chmod u+x init.sh
 	./init.sh
@@ -19,20 +20,20 @@ init:
 build:
 	docker-compose build
 
-# start - Start Docker.
+# target: start =  Start Docker.
 start:
 	 docker-compose up -d
 	 
-#start - Start postfix script.
+#target: postfix =  Start postfix script.
 postfix:
 	 sudo chmod u+x postfix-init.sh
 	./postfix-init.sh
 
 
-# stop - Stop all docker containers
+#target: stop = Stop all docker containers
 stop:
 	docker-compose stop
 
-#down - Remove all docker containers
+# target: down = Remove all docker containers
 down:
 	docker-compose down
