@@ -52,11 +52,6 @@ echo File as is: /etc/opendkim/keys/$user_hostname/default.txt
 
 echo
 
-echo " Your Dmarc DNS record is "
-echo "v=DMARC1; p=none; rua=mailto:user@$user_hostname"
-echo
-echo "Add this as a new TXT record where the Record name is _dmarc.$user_hostname"
-echo
 
 echo " Add a Mail service record if you havent already"
 echo "10 mail.$user_hostname"
@@ -64,7 +59,7 @@ echo
 echo "Add this as a new MX record where the Record name is $user_hostname"
 
 echo " Add a SPF  record "
-public_ip=$(curl -s ifconfig.me) && echo "v=spf1 ip4=$public_ip -all" 
+public_ip=$(curl -s ifconfig.me) && echo "v=spf1 ip4:$public_ip -all" 
 echo
 echo "Add this as a new TXT record where the Record name is $user_hostname"
 
