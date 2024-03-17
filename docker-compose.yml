@@ -1,5 +1,5 @@
 ---
-version: "3.7"
+version: "2"
 
 
 services:
@@ -16,7 +16,28 @@ services:
         published: 3380
         protocol: tcp
         mode: host
-    
+  postfix:
+    build:
+      context: ./email-docker
+      dockerfile: dockerfile
+    image: gophish_postfix
+    init: true
+    restart: always
+    environment:
+      - HOSTNAME=${HOSTNAME}
+    ports:
+      - target: "25"
+        published: "1025"
+        protocol: tcp
+        mode: host
+      - target: "587"
+        published: "1587"
+        protocol: tcp
+        mode: host
+      - target: "993"
+        published: "1993"
+        protocol: tcp
+        mode: host
 
 networks:
   default:
