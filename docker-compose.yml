@@ -22,9 +22,9 @@ services:
       dockerfile: dockerfile
     image: gophish_postfix
     init: true
-    restart: always
-    environment:
-      - HOSTNAME=${HOSTNAME}
+    restart: unless-stopped
+    env_file:
+      - .env
     ports:
       - target: "25"
         published: "1025"

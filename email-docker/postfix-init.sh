@@ -20,11 +20,11 @@ generate_dkim_keys () {
     mkdir -p /etc/opendkim/keys
     chown -R opendkim:opendkim /etc/opendkim
     chmod  744 /etc/opendkim/keys
-    mkdir /etc/opendkim/keys/$HOSTNAME
+    mkdir /etc/opendkim/keys/$USER_HOSTNAME
     #Create Selector Key
-    opendkim-genkey -b 2048 -d $HOSTNAME -D /etc/opendkim/keys/$HOSTNAME -s default -v
+    opendkim-genkey -b 2048 -d $USER_HOSTNAME -D /etc/opendkim/keys/$USER_HOSTNAME -s default -v
     # Change Permission for the keys
-    chown opendkim:opendkim /etc/opendkim/keys/$HOSTNAME/default.private
+    chown opendkim:opendkim /etc/opendkim/keys/$USER_HOSTNAME/default.private
 
 }
 
@@ -83,10 +83,10 @@ config_opendkim(){
     echo "InternalHosts       /etc/opendkim/trusted.hosts" | sudo tee -a /etc/opendkim.conf
 
     #Edit key.table
-    echo "default._domainkey.$HOSTNAME    $HOSTNAME:default:/etc/opendkim/keys/$HOSTNAME/default.private" | sudo tee /etc/opendkim/key.table > /dev/null
+    echo "default._domainkey.$USER_HOSTNAME    $USER_HOSTNAME:default:/etc/opendkim/keys/$USER_HOSTNAME/default.private" | sudo tee /etc/opendkim/key.table > /dev/null
 
     #Edit Trusted.hosts
-    echo -e "127.0.0.1\nlocalhost\nmail\nmail.$HOSTNAME\n$HOSTNAME"  | sudo tee /etc/opendkim/trusted.hosts  > /dev/null
+    echo -e "127.0.0.1\nlocalhost\nmail\nmail.$USER_HOSTNAME\n$USER_HOSTNAME"  | sudo tee /etc/opendkim/trusted.hosts  > /dev/null
 
     # Configure the OpenDKIm socket location
     mkdir /var/spool/postfix/opendkim 
@@ -98,8 +98,8 @@ config_opendkim(){
 
 edit_signing_table (){
     #Edit signing.table
-    echo "*@$HOSTNAME default._domainkey.$HOSTNAME" | sudo tee /etc/opendkim/signing.table > /dev/null
-    echo "*@*.$HOSTNAME default._domainkey.$HOSTNAME" | sudo tee /etc/opendkim/signing.table > /dev/null
+    echo "*@$USER_HOSTNAME default._domainkey.$USER_HOSTNAME" | sudo tee /etc/opendkim/signing.table > /dev/null
+    echo "*@*.$USER_HOSTNAME default._domainkey.$USER_HOSTNAME" | sudo tee /etc/opendkim/signing.table > /dev/null
 
 }
 
@@ -146,27 +146,29 @@ test_config () {
 output_keys (){
     echo "-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-"
     echo "Place the following output as the DKIM key in your DNS server, note that formatting may differ depending on DNS provider"
-    cat /etc/opendkim/keys/$HOSTNAME/default.txt | awk -F'"' '{print $2}' | tr -d '[:space:]'
-    echo "Add this as a new TXT record where the Record name is default._domainkey.$HOSTNAME"
+    cat /etc/opendkim/keys/$USER_HOSTNAME/default.txt | awk -F'"' '{print $2}' | tr -d '[:space:]'
+    echo "Add this as a new TXT record where the Record name is default._domainkey.$USER_HOSTNAME"
     echo "File as is:"
-    cat /etc/opendkim/keys/$HOSTNAME/default.txt
+    cat /etc/opendkim/keys/$USER_HOSTNAME/default.txt
 
     echo
 
     echo "Place the following output as the DMARC key in your DNS server"
-    echo "v=DMARC1; p=reject; rua=mailto:user@$HOSTNAME"
-    echo "Add this as a new TXT record where the Record name is _dmarc.$HOSTNAME"
+    echo "v=DMARC1; p=reject; rua=mailto:user@$USER_HOSTNAME"
+    echo "Add this as a new TXT record where the Record name is _dmarc.$USER_HOSTNAME"
     echo
 
     echo "Place the following output as the MX (Mailserver) value in your DNS server"
-    echo "10 $HOSTNAME"
-    echo "Add this as a new MX record where the Record name is $HOSTNAME"
+    echo "10 $USER_HOSTNAME"
+    echo "Add this as a new MX record where the Record name is $USER_HOSTNAME"
 
     echo "Add an SPF record"
-    public_ip=$(curl -s ifconfig.me) && echo "v=spf1 mx $public_ip -all" 
-    echo "Add this as a new TXT record where the Record name is $HOSTNAME"
+    public_ip=$(curl -s ifconfig.me) && echo "v=spf1 mx $SERVER_IP -all" 
+    echo "Add this as a new TXT record where the Record name is $USER_HOSTNAME"
 
     echo "-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-"
+    echo "Press Enter to continue with script............."
+    ead -r
 }
 
 main() {

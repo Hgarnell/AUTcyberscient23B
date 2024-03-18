@@ -5,10 +5,15 @@ ARG VERSION
 # TO be able to modify and edit postfix, opendkim configuration files
 # this docker container must run as root.
 
+
 # Install necessary packages
 RUN apt-get update --quiet --quiet \
      && apt-get upgrade --quiet --quiet \
+     && echo "postfix postfix/main_mailer_type select Internet Site" | debconf-set-selections \
      && apt-get install -y \
+        curl \
+        telnet \
+        systemd \
         postfix \
         opendkim \
         opendkim-tools \
@@ -26,7 +31,6 @@ RUN adduser mailarchive --quiet --disabled-password \
 
 
 #  entrypoint
-
 USER root
 WORKDIR /root
 
@@ -35,11 +39,11 @@ WORKDIR /root
 COPY src /opt/src
 
 # Set up entrypoint script
-COPY postfix-init.sh.sh /usr/local/bin/
+COPY postfix-init.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/postfix-init.sh
 
 # Expose ports
 EXPOSE 25 587 993
 
 # Set entrypoint
-ENTRYPOINT ["postfix-init.sh.sh"]
+ENTRYPOINT ["/bin/bash"]
