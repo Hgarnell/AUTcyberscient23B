@@ -19,7 +19,7 @@ services:
   postfix:
     build:
       context: ./email-docker
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     image: gophish_postfix
     init: true
     restart: unless-stopped

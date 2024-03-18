@@ -168,7 +168,7 @@ output_keys (){
 
     echo "-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-"
     echo "Press Enter to continue with script............."
-    ead -r
+    read -r
 }
 
 main() {

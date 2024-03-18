@@ -38,9 +38,3 @@ stop:
 down:
 	docker-compose down
 
-# target: sethost = set ENV
-sethost: 
-    @read -p "Enter hostname: " SERVER_HOSTNAME; \
-    echo "SERVER_HOSTNAME=$$SERVER_HOSTNAME" > email-docker/.env; \
-    SERVER_IP=$$(hostname -I | cut -d' ' -f1); \
-    echo "SERVER_IP=$$SERVER_IP" >> email-docker/.env
