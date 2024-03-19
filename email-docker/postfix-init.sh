@@ -6,12 +6,11 @@ check_root() {
         echo "Error: Script must be run as root or with sudo!"
         exit 1
     fi
-    usermod -G opendkim postfix
 }
 
 #Set cloud to false
 set_cloud_false () {
-sudo bash -c 'awk "/^preserve_hostname: false\$/ {\$2=\"true\"} 1" /etc/cloud/cloud.cfg > /etc/cloud/cloud.cfg.tmp && mv /etc/cloud/cloud.cfg.tmp /etc/cloud/cloud.cfg'
+ bash -c 'awk "/^preserve_hostname: false\$/ {\$2=\"true\"} 1" /etc/cloud/cloud.cfg > /etc/cloud/cloud.cfg.tmp && mv /etc/cloud/cloud.cfg.tmp /etc/cloud/cloud.cfg'
 }
 
 
@@ -65,28 +64,27 @@ config_opendkim(){
     sed -i '/^#.*\bInternalHosts\b/s/^#//' /etc/opendkim.conf
     
     # restart if opendkim stops
-    echo "AutoRestart            yes" | sudo tee -a /etc/opendkim.conf
-    echo "AutoRestartRate        10/1M" | sudo tee -a /etc/opendkim.conf
+    echo "AutoRestart            yes" |  tee -a /etc/opendkim.conf
+    echo "AutoRestartRate        10/1M" |  tee -a /etc/opendkim.conf
     
     # run in background
-    echo "Background             yes" | sudo tee -a /etc/opendkim.conf
+    echo "Background             yes" |  tee -a /etc/opendkim.conf
     
-    echo "DNSTimeout             5" | sudo tee -a /etc/opendkim.conf
-    echo "SignatureAlgorithm     rsa-sha256" | sudo tee -a /etc/opendkim.conf
+    echo "DNSTimeout             5" |  tee -a /etc/opendkim.conf
+    echo "SignatureAlgorithm     rsa-sha256" |  tee -a /etc/opendkim.conf
     
     # specify key tables and signing table locations
-    echo "KeyTable            refile:/etc/opendkim/key.table" | sudo tee -a /etc/opendkim.conf
-    echo "SigningTable     refile:/etc/opendkim/signing.table" | sudo tee -a /etc/opendkim.conf
+    echo "KeyTable            refile:/etc/opendkim/key.table" |  tee -a /etc/opendkim.conf
+    echo "SigningTable     refile:/etc/opendkim/signing.table" |  tee -a /etc/opendkim.conf
 
     # specify the file containing a list of hosts
-    echo "ExternalIgnoreList  /etc/opendkim/trusted.hosts" | sudo tee -a /etc/opendkim.conf
-    echo "InternalHosts       /etc/opendkim/trusted.hosts" | sudo tee -a /etc/opendkim.conf
-
+    echo "ExternalIgnoreList  /etc/opendkim/trusted.hosts" |  tee -a /etc/opendkim.conf
+    echo "InternalHosts       /etc/opendkim/trusted.hosts" |  tee -a /etc/opendkim.conf
     #Edit key.table
     echo "default._domainkey.$USER_HOSTNAME    $USER_HOSTNAME:default:/etc/opendkim/keys/$USER_HOSTNAME/default.private" | sudo tee /etc/opendkim/key.table > /dev/null
 
     #Edit Trusted.hosts
-    echo -e "127.0.0.1\nlocalhost\nmail\nmail.$USER_HOSTNAME\n$USER_HOSTNAME"  | sudo tee /etc/opendkim/trusted.hosts  > /dev/null
+    echo -e "127.0.0.1\nlocalhost\nmail\nmail.$USER_HOSTNAME\n$USER_HOSTNAME"  |  tee /etc/opendkim/trusted.hosts  > /dev/null
 
     # Configure the OpenDKIm socket location
     mkdir /var/spool/postfix/opendkim 
@@ -98,8 +96,8 @@ config_opendkim(){
 
 edit_signing_table (){
     #Edit signing.table
-    echo "*@$USER_HOSTNAME default._domainkey.$USER_HOSTNAME" | sudo tee /etc/opendkim/signing.table > /dev/null
-    echo "*@*.$USER_HOSTNAME default._domainkey.$USER_HOSTNAME" | sudo tee /etc/opendkim/signing.table > /dev/null
+    echo "*@$USER_HOSTNAME default._domainkey.$USER_HOSTNAME" |  tee /etc/opendkim/signing.table > /dev/null
+    echo "*@*.$USER_HOSTNAME default._domainkey.$USER_HOSTNAME" |  tee /etc/opendkim/signing.table > /dev/null
 
 }
 
@@ -122,7 +120,7 @@ restart_services()
 
 test_config () {
     # test if localhost on port 25 works
-   if echo "ehlo localhost" | telnet localhost 25 |   grep -q "250-AUTH PLAIN LOGIN" :
+   if echo "ehlo localhost" | telnet localhost 25 |   grep -q "250-AUTH PLAIN LOGIN" ; then
         echo "Test passed: Set up succesful"
     else
         echo "Test failed: Set up failed"
