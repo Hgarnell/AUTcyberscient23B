@@ -37,21 +37,21 @@ smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
 
 # specifies hostname
-myhostname = kiwibytesolutions.info
+myhostname = ${SERVER_HOSTNAME}
 
 #alias mappings for other mailboxes and aliases
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
 
 # specifies where the mail server will accept and send emails from
-myorigin = /etc/mailname
-mydestination = $myhostname, kiwibytesolution.info, kiwibytesolutions.info, localhost.info, localhost
+myorigin = ${SERVER_HOSTNAME}
+mydestination = $myhostname, ${SERVER_HOSTNAME}, localhost.com, localhost
 
 # specifies destiantion if there is another email server, in this case, no
 relayhost = 
 
 # specifies if there are networks or other networks that can relay emails
-mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 ${SERVER_IP}
 
 # sets mailbox maximum size, by default 0 means unlimited
 mailbox_size_limit = 0

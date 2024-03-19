@@ -22,6 +22,7 @@ RUN apt-get update --quiet --quiet \
         dovecot-pop3d \
         postfix-policyd-spf-python\
         postfix-pcre\
+        diceware \
     sudo \
     && rm -rf /var/lib/apt/lists/*
 
@@ -35,15 +36,18 @@ USER root
 WORKDIR /root
 
 
-# Copy script and configuration files
-COPY src /opt/src
+COPY src src/ src/
 
 # Set up entrypoint script
-COPY postfix-init.sh /usr/local/bin/
+COPY postfix-init.sh src/version.txt ./
 RUN chmod +x /usr/local/bin/postfix-init.sh
 
 # Expose ports
 EXPOSE 25 587 993
 
 # Set entrypoint
-ENTRYPOINT ["/bin/bash"]
+#ENTRYPOINT ["/bin/bash"]
+VOLUME ["/var/log", "/var/spool/postfix"]
+EXPOSE 25/TCP 587/TCP 993/TCP
+ENTRYPOINT ["./ postfix-init.sh"]
+CMD ["postfix", "-v", "start-fg"]

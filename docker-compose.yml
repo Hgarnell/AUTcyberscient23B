@@ -21,6 +21,9 @@ services:
       context: ./email-docker
       dockerfile: Dockerfile
     image: gophish_postfix
+    environment:
+     - SERVER_HOSTNAME=example.com
+     - SERVER_IP=0.0.0.0/32
     init: true
     restart: unless-stopped
     env_file:
