@@ -52,5 +52,5 @@ EXPOSE 25 587 993
 #ENTRYPOINT ["/bin/bash"]
 VOLUME ["/var/log", "/var/spool/postfix"]
 EXPOSE 25/TCP 587/TCP 993/TCP
-ENTRYPOINT ["./usr/local/bin/postfix-init.sh"]
+ENTRYPOINT ["/usr/local/bin/postfix-init.sh"]
 CMD ["postfix", "-v", "start-fg"]

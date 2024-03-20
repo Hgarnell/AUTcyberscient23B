@@ -2,7 +2,7 @@
 #!/bin/bash
 
 #generate confifunction
-generate_configs() {
+function generate_configs () {
   #put in the env variables
   echo "Generate postfix configurations for ${SERVER_HOSTNAME}"
   envsubst '\$SERVER_HOSTNAME \$SERVER_IP' < src/postfix/main.cf > /etc/postfix/main.cf
@@ -36,13 +36,13 @@ generate_configs() {
 
 function edit_signing_table (){
     #Edit signing.table
-    echo "*@{$SERVER_HOSTNAME} default._domainkey.{$SERVER_HOSTNAME}" | sudo tee /etc/opendkim/signing.table > /dev/null
-    echo "*@*.{$SERVER_HOSTNAME} default._domainkey.{$SERVER_HOSTNAME}" | sudo tee /etc/opendkim/signing.table > /dev/null
+    echo "*@$SERVER_HOSTNAME default._domainkey.$SERVER_HOSTNAME" | sudo tee /etc/opendkim/signing.table > /dev/null
+    echo "*@*.$SERVER_HOSTNAME default._domainkey.$SERVER_HOSTNAME" | sudo tee /etc/opendkim/signing.table > /dev/null
 
 }
 
 # Check if running script is running as root
-function check_root() {
+function check_root () {
     if [[ $(id -u) != "0" ]]; then
         echo "Error: Script must be run as root or with sudo!"
         exit 1
@@ -82,7 +82,7 @@ function output_keys (){
     read -r
 }
 
-function generate_users() {
+function generate_users () {
   echo "Generating users and passwords:"
   echo "--------------------------------------------"
   while IFS=" " read -r username password || [ -n "$username" ]; do
