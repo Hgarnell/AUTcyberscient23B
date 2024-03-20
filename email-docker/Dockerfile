@@ -42,7 +42,6 @@ WORKDIR /root
 COPY src src/ src/
 
 # Set up entrypoint script
-COPY postfix-init.sh src/version.txt ./
 RUN chmod +x /usr/local/bin/postfix-init.sh
 
 # Expose ports
