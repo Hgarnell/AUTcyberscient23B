@@ -1,11 +1,9 @@
 #!/bin/bash
 
-#generate configd
-function generate_configs() {
+#generate confifunction generate_configs() {
   #put in the env variables
   echo "Generating postfix configurations for ${SERVER_HOSTNAME}"
   envsubst '\$SERVER_HOSTNAME \$SERVER_IP' < src/postfix/main.cf > /etc/postfix/main.cf
-  cp /etc/postfix/master.cf.orig /etc/postfix/master.cf
   envsubst '\$SERVER_HOSTNAME \$SERVER_IP' < src/opendkim/opendkim.conf > /etc/opendkim.conf
 
   # generate opendkim
@@ -15,7 +13,6 @@ function generate_configs() {
   mkdir -p "/etc/opendkim/keys/${SERVER_HOSTNAME}"
   opendkim-genkey -b 2048 -d ${SERVER_HOSTNAME} -D /etc/opendkim/keys/${SERVER_HOSTNAME} -s default -v
   envsubst '\$SERVER_HOSTNAME \$SERVER_IP' < src/opendkim/trusted.hosts > /etc/opendkim/trusted.hosts 
-  cp /etc/default/opendkim.orig /etc/default/opendkim
   echo 'SOCKET="inet:12301"' >> /etc/default/opendkim
   chown opendkim:opendkim /etc/opendkim/keys/${SERVER_HOSTNAME}/default.private
 
@@ -173,25 +170,25 @@ function test_config () {
 function output_keys (){
     echo "-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-"
     echo "Place the following output as the DKIM key in your DNS server, note that formatting may differ depending on DNS provider"
-    cat /etc/opendkim/keys/{$SERVER_HOSTNAME}/default.txt | awk -F'"' '{print $2}' | tr -d '[:space:]'
-    echo "Add this as a new TXT record where the Record name is default._domainkey.{$SERVER_HOSTNAME}"
+    cat /etc/opendkim/keys/$SERVER_HOSTNAME/default.txt | awk -F'"' '{print $2}' | tr -d '[:space:]'
+    echo "Add this as a new TXT record where the Record name is default._domainkey.$SERVER_HOSTNAME"
     echo "File as is:"
-    cat /etc/opendkim/keys/{$SERVER_HOSTNAME}/default.txt
+    cat /etc/opendkim/keys/$SERVER_HOSTNAME/default.txt
 
     echo
 
     echo "Place the following output as the DMARC key in your DNS server"
-    echo "v=DMARC1; p=reject; rua=mailto:user@{$SERVER_HOSTNAME}"
-    echo "Add this as a new TXT record where the Record name is _dmarc.{$SERVER_HOSTNAME}"
+    echo "v=DMARC1; p=reject; rua=mailto:user@$SERVER_HOSTNAME"
+    echo "Add this as a new TXT record where the Record name is _dmarc.$SERVER_HOSTNAME"
     echo
 
     echo "Place the following output as the MX (Mailserver) value in your DNS server"
-    echo "10 {$SERVER_HOSTNAME}"
-    echo "Add this as a new MX record where the Record name is {$SERVER_HOSTNAME}"
+    echo "10 $SERVER_HOSTNAME"
+    echo "Add this as a new MX record where the Record name is $SERVER_HOSTNAME"
 
     echo "Add an SPF record"
     public_ip=$(curl -s ifconfig.me) && echo "v=spf1 mx $SERVER_IP -all" 
-    echo "Add this as a new TXT record where the Record name is {$SERVER_HOSTNAME}"
+    echo "Add this as a new TXT record where the Record name is $SERVER_HOSTNAME"
 
     echo "-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-"
     echo "Press Enter to continue with script............."
@@ -217,7 +214,7 @@ function generate_users() {
 if [ "$1" = 'postfix' ]; then
   echo "Starting mail server with:"
   echo "  SERVER_HOSTNAME=${SERVER_HOSTNAME}"
-  echo "  RELAY_IP=${RELAY_IP}"
+  echo "  RELAY_IP=${SERVER_IP}"
 
   # check to see if the configuration was completed for this domain
   if [[ ! -f conf_gen_done.txt ]] || [[ $(< conf_gen_done.txt) != "${SERVER_HOSTNAME}" ]]; then
@@ -228,7 +225,7 @@ if [ "$1" = 'postfix' ]; then
   fi
 
   # generate the users from the secrets
-  grep -v '^#\|^$' /run/secrets/users.txt | generate_users
+  grep -v '^#\|^$' src/users.txt | generate_users
 
   # postfix needs fresh copies of files in its chroot jail
   cp /etc/{hosts,localtime,nsswitch.conf,resolv.conf,services} /var/spool/postfix/etc/
@@ -243,3 +240,6 @@ if [ "$1" = 'postfix' ]; then
 fi
 
 exec "$@"
+
+
+
