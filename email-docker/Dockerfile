@@ -14,7 +14,6 @@ RUN apt-get update --quiet --quiet \
      && echo "postfix postfix/main_mailer_type select Internet Site" | debconf-set-selections \
      && apt-get install -y \
         gettext \
-        envsubst \
         curl \
         telnet \
         systemd \
@@ -41,6 +40,7 @@ WORKDIR /root
 
 
 COPY src src/ src/
+COPY postfix-init.sh /usr/local/bin/postfix-init.sh
 
 # Set up entrypoint script
 RUN chmod +x /usr/local/bin/postfix-init.sh
@@ -52,5 +52,5 @@ EXPOSE 25 587 993
 #ENTRYPOINT ["/bin/bash"]
 VOLUME ["/var/log", "/var/spool/postfix"]
 EXPOSE 25/TCP 587/TCP 993/TCP
-ENTRYPOINT ["./ postfix-init.sh"]
+ENTRYPOINT ["./usr/local/bin/postfix-init.sh"]
 CMD ["postfix", "-v", "start-fg"]
