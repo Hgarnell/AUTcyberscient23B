@@ -25,8 +25,6 @@ services:
      - SERVER_IP=0.0.0.0/32
     init: true
     restart: unless-stopped
-    env_file:
-      - .env
     ports:
       - target: "25"
         published: "1025"
