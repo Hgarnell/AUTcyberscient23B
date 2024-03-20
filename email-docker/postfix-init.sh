@@ -53,7 +53,6 @@ function check_root() {
         echo "Error: Script must be run as root or with sudo!"
         exit 1
     fi
-    usermod -G opendkim postfix
 }
 
 #Set cloud to false
@@ -99,23 +98,22 @@ function config_opendkim(){
     sed -i '/^#.*\bInternalHosts\b/s/^#//' /etc/opendkim.conf
     
     # restart if opendkim stops
-    echo "AutoRestart            yes" | sudo tee -a /etc/opendkim.conf
-    echo "AutoRestartRate        10/1M" | sudo tee -a /etc/opendkim.conf
+    echo "AutoRestart            yes" |  tee -a /etc/opendkim.conf
+    echo "AutoRestartRate        10/1M" |  tee -a /etc/opendkim.conf
     
     # run in background
-    echo "Background             yes" | sudo tee -a /etc/opendkim.conf
+    echo "Background             yes" |  tee -a /etc/opendkim.conf
     
-    echo "DNSTimeout             5" | sudo tee -a /etc/opendkim.conf
-    echo "SignatureAlgorithm     rsa-sha256" | sudo tee -a /etc/opendkim.conf
+    echo "DNSTimeout             5" |  tee -a /etc/opendkim.conf
+    echo "SignatureAlgorithm     rsa-sha256" |  tee -a /etc/opendkim.conf
     
     # specify key tables and signing table locations
-    echo "KeyTable            refile:/etc/opendkim/key.table" | sudo tee -a /etc/opendkim.conf
-    echo "SigningTable     refile:/etc/opendkim/signing.table" | sudo tee -a /etc/opendkim.conf
+    echo "KeyTable            refile:/etc/opendkim/key.table" |  tee -a /etc/opendkim.conf
+    echo "SigningTable     refile:/etc/opendkim/signing.table" |  tee -a /etc/opendkim.conf
 
     # specify the file containing a list of hosts
-    echo "ExternalIgnoreList  /etc/opendkim/trusted.hosts" | sudo tee -a /etc/opendkim.conf
-    echo "InternalHosts       /etc/opendkim/trusted.hosts" | sudo tee -a /etc/opendkim.conf
-
+    echo "ExternalIgnoreList  /etc/opendkim/trusted.hosts" |  tee -a /etc/opendkim.conf
+    echo "InternalHosts       /etc/opendkim/trusted.hosts" |  tee -a /etc/opendkim.conf
     #Edit key.table
     echo "default._domainkey.{$SERVER_HOSTNAME}    {$SERVER_HOSTNAME}:default:/etc/opendkim/keys/{$SERVER_HOSTNAME}/default.private" | sudo tee /etc/opendkim/key.table > /dev/null
 
@@ -151,7 +149,7 @@ function restart_services()
 
 function test_config () {
     # test if localhost on port 25 works
-   if echo "ehlo localhost" | telnet localhost 25 |   grep -q "250-AUTH PLAIN LOGIN" :
+   if echo "ehlo localhost" | telnet localhost 25 |   grep -q "250-AUTH PLAIN LOGIN" ; then
         echo "Test passed: Set up succesful"
     else
         echo "Test failed: Set up failed"
