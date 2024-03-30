@@ -21,3 +21,9 @@ sudo usermod -aG docker ubuntu
 sudo apt install docker-compose
 sudo apt install docker-ce
 
+# open firewall
+sudo ufw enable
+sudo ufw allow 80
+sudo ufw allow 443
+sudo ufw allow 'OpenSSH'
+sudo ufw allow 3333
