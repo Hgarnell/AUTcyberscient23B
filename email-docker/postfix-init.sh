@@ -37,6 +37,12 @@ function generate_configs () {
 
   # create a file marking the configuration as completed for this domain
   echo "All configurations generated for ${SERVER_HOSTNAME}"
+
+  mkdir /var/spool/postfix/opendkim/ 
+  mkdir /var/spool/postfix/opendmarc/ 
+  chown -R opendkim:opendkim /var/spool/postfix/opendkim
+  chown -R opendmarc:opendmarc /var/spool/postfix/opendmarc
+
 }
 
 function edit_signing_table (){
@@ -79,8 +85,7 @@ function output_keys (){
     echo "Add this as a new TXT record where the Record name is $SERVER_HOSTNAME"
 
     echo "-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-"
-    echo "Press Enter to continue with script............."
-    read -r
+   
 }
 
 function generate_users () {

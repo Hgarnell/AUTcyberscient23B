@@ -30,7 +30,7 @@ services:
     restart: unless-stopped
     ports:
       - target: "25"
-        published: "1025"
+        published: "25"
         protocol: tcp
         mode: host
       - target: "587"

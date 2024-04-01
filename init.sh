@@ -25,5 +25,6 @@ sudo apt install docker-ce
 sudo ufw enable
 sudo ufw allow 80
 sudo ufw allow 443
-sudo ufw allow 'OpenSSH'
+sudo ufw allow 25
 sudo ufw allow 3333
+sudo ufw allow 'OpenSSH'
