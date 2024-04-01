@@ -20,6 +20,7 @@ RUN apt-get update --quiet --quiet \
         postfix \
         opendkim \
         opendkim-tools \
+        opendmarc \
         dovecot-core \
         dovecot-imapd \
         dovecot-pop3d \

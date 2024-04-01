@@ -1,5 +1,6 @@
-#https://github.com/cisagov/postfix-docker/blob/develop/src/docker-entrypoint.sh
 #!/bin/bash
+#https://github.com/cisagov/postfix-docker/blob/develop/src/docker-entrypoint.sh
+
 
 #generate confifunction
 function generate_configs () {
@@ -16,12 +17,16 @@ function generate_configs () {
   opendkim-genkey -b 2048 -d ${SERVER_HOSTNAME} -D /etc/opendkim/keys/${SERVER_HOSTNAME} -s default -v
   envsubst '\$SERVER_HOSTNAME \$SERVER_IP' < src/opendkim/trusted.hosts > /etc/opendkim/trusted.hosts 
   # Change Permission for the keys
+  #add keytable
+  
+  echo "default._domainkey.$user_hostname    $user_hostname:default:/etc/opendkim/keys/$user_hostname/default.private" | sudo tee /etc/opendkim/key.table > /dev/null
+
   chown opendkim:opendkim /etc/opendkim/keys/${SERVER_HOSTNAME}/default.private
   edit_signing_table
 
  # generate opendmarc
   echo "Generate opendmarc configurations for ${SERVER_HOSTNAME}"
-  envsubst '\$SERVER_HOSTNAME \$SERVER_IP' < src/opendmarc/opendmarc.conf > /etc/opendkim.conf 
+  envsubst '\$SERVER_HOSTNAME \$SERVER_IP' < src/opendmarc/opendmarc.conf > /etc/opendmarc.conf 
   mkdir -p "/etc/opendmarc"
   echo "localhost" > /etc/opendmarc/ignore.hosts
   chown -R opendmarc:opendmarc /etc/opendmarc
@@ -49,10 +54,6 @@ function check_root () {
     fi
 }
 
-#Set cloud to false
-function set_cloud_false () {
-sudo bash -c 'awk "/^preserve_hostname: false\$/ {\$2=\"true\"} 1" /etc/cloud/cloud.cfg > /etc/cloud/cloud.cfg.tmp && mv /etc/cloud/cloud.cfg.tmp /etc/cloud/cloud.cfg'
-}
 
 function output_keys (){
     echo "-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-"
@@ -101,7 +102,6 @@ function generate_users () {
 if [ "$1" = 'postfix' ]; then
 
   check_root
-  set_cloud_false
 
   echo "Starting mail server with:"
   echo "  SERVER_HOSTNAME=${SERVER_HOSTNAME}"
@@ -116,17 +116,18 @@ if [ "$1" = 'postfix' ]; then
   fi
 
   # generate the users from the secrets
-  grep -v '^#\|^$' src/users.txt | generate_users
+  grep -v '^#\|^$' src/user.txt | generate_users
 
   # postfix needs fresh copies of files in its chroot jail
   cp /etc/{hosts,localtime,nsswitch.conf,resolv.conf,services} /var/spool/postfix/etc/
 
-  echo "DKIM DNS entry:"
-    output_keys
-
+ 
   opendmarc
   opendkim
   dovecot
+  echo "DKIM DNS entry:"
+  output_keys
+
   exec "$@"
 fi
 
