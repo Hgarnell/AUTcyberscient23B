@@ -12,6 +12,7 @@ RUN apt-get update --quiet --quiet \
      && echo "postfix postfix/mailname string $hostname" | debconf-set-selections \
      && echo "postfix postfix/main_mailer_type select Internet Site" | debconf-set-selections \
      && echo "postfix postfix/main_mailer_type select Internet Site" | debconf-set-selections \
+     && echo "opendmarc opendmarc/dbconfig-install boolean false" | debconf-set-selections \
      && apt-get install -y \
         gettext \
         curl \

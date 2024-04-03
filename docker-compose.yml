@@ -23,9 +23,6 @@ services:
     environment:
      - SERVER_HOSTNAME=example.com
      - SERVER_IP=0.0.0.0/32
-    networks:
-      front:
-      ipv4_address: ${SERVER_IP}
     init: true
     restart: unless-stopped
     ports:
@@ -41,6 +38,8 @@ services:
         published: "1993"
         protocol: tcp
         mode: host
-
+  volumes:
+      - /etc/localtime:/etc/localtime:ro
+      
 networks:
   default:
