@@ -1,0 +1,74 @@
+#main.cf - config file for postfix
+# See /usr/share/postfix/main.cf.dist for a commented, more complete version
+
+
+# Debian specific:  Specifying a file name will cause the first
+# line of that file to be used as the name.  The Debian default
+# is /etc/mailname.
+#myorigin = /etc/mailname
+
+# server banner for smtp configuration
+smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
+biff = no
+
+# appending .domain is the MUA's job.
+append_dot_mydomain = no
+
+# Uncomment the next line to generate "delayed mail" warnings
+#delay_warning_time = 4h
+
+readme_directory = no
+
+# See http://www.postfix.org/COMPATIBILITY_README.html -- default to 3.6 on
+# fresh installs.
+compatibility_level = 3.6
+
+# TLS parameters - these specify the tls certificate and key files and security level
+smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
+smtpd_tls_security_level=may
+
+smtp_tls_CApath=/etc/ssl/certs
+smtp_tls_security_level=may
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+
+# sets restrictions for who can relay emails through this server: allows for people on the network aka this server,
+# authenticated users non on the network, and denys destinations not on the network 
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+
+# specifies hostname
+myhostname = ${SERVER_HOSTNAME}
+
+#alias mappings for other mailboxes and aliases
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+
+# specifies where the mail server will accept and send emails from
+myorigin = ${SERVER_HOSTNAME}
+mydestination = $myhostname, ${SERVER_HOSTNAME}, localhost.com, localhost
+
+# specifies destiantion if there is another email server, in this case, no
+relayhost = 
+
+# specifies if there are networks or other networks that can relay emails
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 ${SERVER_IP}
+
+# sets mailbox maximum size, by default 0 means unlimited
+mailbox_size_limit = 0
+recipient_delimiter = +
+
+# specify which network interfaces postfix should use
+inet_interfaces = all
+inet_protocols = ipv4
+
+# mailfilter (milter) configuration
+milter_default_action = accept
+milter_protocol = 6
+smtpd_milters = local:opendkim/opendkim.sock, local:opendmarc/opendmarc.sock
+non_smtpd_milters = local:opendkim/opendkim.sock, local:opendmarc/opendmarc.sock
+
+# SASL(simple authentication and Security Layer) using Dovecot
+smtpd_sasl_type = dovecot
+smtpd_sasl_auth_enable = yes
+smtpd_recipient_restrictions = permit_sasl_authenticated,permit_mynetworks,reject_unauth_destination
+smtpd_sasl_path = private/auth

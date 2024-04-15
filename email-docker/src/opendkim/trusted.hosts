@@ -1,0 +1,4 @@
+127.0.0.1
+localhost
+${SERVER_HOSTNAME}
+${SERVER_IP}
