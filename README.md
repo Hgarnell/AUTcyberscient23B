@@ -26,7 +26,7 @@ You will need to update your `docker-compose.yml` file to adjust the variable na
 The variables you are loking to change are named `SERVER_HOSTNAME=example.com` and `SERVER_IP`
 
 ### Generating key for SSL cert
-openssl dhparam -out your/file/path 2048
+openssl dhparam -out your/file/path 2048 ( openssl dhparam -out /root/AUTcyberscient23B/dhparam/dhparam-2048.pem 2048)
 
 
 
