@@ -1,4 +1,3 @@
----
 version: "3"
 
 services:
@@ -15,6 +14,7 @@ services:
         published: 3380
         protocol: tcp
         mode: host
+  
   web:
     image: nginx:1.14.2-alpine
     restart: always
@@ -27,21 +27,23 @@ services:
     ports:
       - 80:80
       - 443:443
+
   certbot:
      image: certbot/certbot:latest
-     command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email tfk2864@autuni.ac.nz --agree-tos --no-eff-email -d kiwibytesolutions.info
+     command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email your_email@example.com --agree-tos --no-eff-email -d your_domain.com
      volumes:
        - ./certbot/conf/:/etc/letsencrypt
        - ./certbot/logs/:/var/log/letsencrypt
        - ./certbot/data:/usr/share/nginx/html/letsencrypt
+
   postfix:
     build:
       context: ./email-docker
       dockerfile: Dockerfile
     image: gophish_postfix
     environment:
-     - SERVER_HOSTNAME=kiwibytesolutions.info
-     - SERVER_IP=46.250.243.202
+     - SERVER_HOSTNAME=your_domain.com
+     - SERVER_IP=your_server_ip
     init: true
     restart: unless-stopped
     ports:
@@ -60,3 +62,4 @@ services:
 
 networks:
   default:
+
