@@ -25,11 +25,19 @@ You will need to update your `docker-compose.yml` file to adjust the variable na
     nano docker-compose.yml
 The variables you are loking to change are named `SERVER_HOSTNAME=example.com` and `SERVER_IP`
 
+### Generating key for SSL cert
+openssl dhparam -out your/file/path 2048
+
+
 
 ### Build containers
 After editing the variable names, you can go ahead and begin building your containers with the make build command, followed with the make start command.
     make build
     make start
+
+### Initialize certbot container 
+./configure_ssh.sh
+
 
 
 ### Check if containers are runnings
