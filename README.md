@@ -26,7 +26,7 @@ You will need to update your `docker-compose.yml` file to adjust the variable na
 The variables you are loking to change are named `SERVER_HOSTNAME=example.com` and `SERVER_IP`
 
 ### Generating key for SSL cert
-openssl dhparam -out your/file/path 2048 ( openssl dhparam -out /root/AUTcyberscient23B/dhparam/dhparam-2048.pem 2048)
+openssl dhparam -out your/file/path/dhparam/dhparam-2048.pem 2048 ( openssl dhparam -out /root/AUTcyberscient23B/dhparam/dhparam-2048.pem 2048)
 
 
 
@@ -35,7 +35,7 @@ After editing the variable names, you can go ahead and begin building your conta
     make build
     make start
 
-### Initialize certbot container 
+### Initialize certbot container and build cotainer 
 ./configure_ssh.sh
 
 
