@@ -14,7 +14,6 @@ services:
         published: 3380
         protocol: tcp
         mode: host
-  
   web:
     image: nginx:1.14.2-alpine
     restart: always
