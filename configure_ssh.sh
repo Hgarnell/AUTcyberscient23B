@@ -59,7 +59,7 @@ EOF
 generate_http_config
 
 #Run docker
-docker-compose up 
+docker-compose up -d
 
 # Restart Nginx with Docker Compose
 docker-compose restart web
