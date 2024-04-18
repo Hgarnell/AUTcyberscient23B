@@ -38,3 +38,15 @@ stop:
 down:
 	docker-compose down
 
+# target: generateOpenSSL = Generates openssl key to /root/AUTcyberscient23B/dhparam/dhparam-2048.pem
+generateOpenSSL:
+	openssl dhparam -out /root/AUTcyberscient23B/dhparam/dhparam-2048.pem 2048
+
+# target: runEncryptPart1 = Runs the first script out of 2.
+runEncryptPart1:
+	 sudo chmod u+x configure_ssh.sh
+	./configure_ssh.sh
+# target:runEncryptPart2 = Runs the second script out of 2.
+runEncryptPart2:
+ sudo chmod u+x configure_ssh2.sh
+	./configure_ssh2.sh
