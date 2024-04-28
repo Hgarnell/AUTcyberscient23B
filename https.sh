@@ -9,8 +9,6 @@ fi
 # Assign the domain name to a variable
 DOMAIN="$1"
 
-
-
 # Function to generate the HTTPS Nginx configuration
 generate_https_config() {
     cat <<EOF > /root/AUTcyberscient23B/conf.d/default.conf
@@ -36,12 +34,6 @@ generate_https_config() {
     }
 EOF
 }
-
-#Run docker
-Docker-compose up -d
-
-# Restart Nginx with Docker Compose
-docker-compose restart web
 
 # Generate the HTTPS configuration
 generate_https_config
