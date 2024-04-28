@@ -44,10 +44,10 @@ generateOpenSSL:
 
 # target: runEncryptPart1 = Runs the first script out of 2.
 runEncryptPart1:
-	 sudo chmod u+x configure_ssh.sh
-	./configure_ssh.sh
+	 sudo chmod u+x http.sh
+	./http.sh $(DOMAIN)
 	
 # target:runEncryptPart2 = Runs the second script out of 2.
 runEncryptPart2:
- 	sudo chmod u+x configure_ssh2.sh
-	./configure_ssh2.sh
+ 	sudo chmod u+x https.sh
+	./https.sh $(DOMAIN)
