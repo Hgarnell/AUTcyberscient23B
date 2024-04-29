@@ -42,10 +42,10 @@ down:
 generateOpenSSL:
 	openssl dhparam -out /root/AUTcyberscient23B/dhparam/dhparam-2048.pem 2048
 
-# target: runEncryptPart1 = Runs the first script out of 2.
-runEncryptPart1:
+# target: runHttp = Runs the first script out of 2.
+runHttp:
 	sudo chmod u+x http.sh
 	
-# target:runEncryptPart2 = Runs the second script out of 2.
-runEncryptPart2:
+# target:runHttps = Runs the second script out of 2.
+runHttps:
 	sudo chmod u+x https.sh
