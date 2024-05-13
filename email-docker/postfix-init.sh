@@ -81,7 +81,7 @@ function output_keys (){
     echo "Add this as a new MX record where the Record name is $SERVER_HOSTNAME"
 
     echo "Add an SPF record"
-    public_ip=$(curl -s ifconfig.me) && echo "v=spf1 mx $SERVER_IP -all" 
+    public_ip=$(curl -s ifconfig.me) && echo "v=spf1 mx ip4:$SERVER_IP -all" 
     echo "Add this as a new TXT record where the Record name is $SERVER_HOSTNAME"
 
     echo "-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-"

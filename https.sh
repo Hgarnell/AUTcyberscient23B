@@ -29,8 +29,8 @@ generate_https_config() {
         ssl_ciphers ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DH+3DES:!ADH:!AECDH:!MD5;
 
         location / {
-            index index.html;
-        }
+            return 301 https://${DOMAIN}\$request_uri;
+         }
     }
 EOF
 }
