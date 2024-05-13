@@ -11,7 +11,7 @@ DOMAIN="$1"
 
 # Function to generate the HTTP Nginx configuration
 generate_http_config() {
-    cat <<EOF > /root/AUTcyberscient23B/conf.d/default.conf
+    cat <<EOF > conf.d/default.conf
     server {
         listen 80;
         server_name ${DOMAIN};
