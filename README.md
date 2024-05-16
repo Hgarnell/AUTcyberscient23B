@@ -28,9 +28,11 @@ The variables you are looking to change are named `SERVER_HOSTNAME=example.com` 
 ### Generating key for SSL cert
 openssl dhparam -out your/file/path/dhparam/dhparam-2048.pem 2048 ( openssl dhparam -out /root/AUTcyberscient23B/dhparam/dhparam-2048.pem 2048)
 
-## Write Nginx config 
-make  runNginx_config
-./nginx.sh yourdomainname.com
+## Write http config 
+make  runHttp
+./http.sh yourdomainname.com
+make  runHttps
+./https.sh yourdomainname.com
 
 # Write Phishing cotainerr config 
 make  runPhishing_config
