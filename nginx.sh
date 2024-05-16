@@ -43,3 +43,6 @@ EOF
 
 # Generate the HTTP configuration
 generate_nginx_config
+
+# Notify the user
+echo "Nginx configuration for ${DOMAIN} has been written to /root/AUTcyberscient23B/conf.d/default.conf"
