@@ -43,8 +43,8 @@ generateOpenSSL:
 	openssl dhparam -out /root/AUTcyberscient23B/dhparam/dhparam-2048.pem 2048
 
 # target: runHttp = Runs the first script out of 2.
-runHttp:
-	sudo chmod u+x http.sh
+runNginx_config:
+	sudo chmod u+x nginx.sh
 	
 # target:runHttps = Runs the second script out of 2.
 runHttps:
