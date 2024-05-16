@@ -7,7 +7,7 @@ if [ $# -eq 0 ]; then
 fi
 
 # Assign the domain name to a variable
-DOMAIN="$1"
+DOMAIN_NAME="$1"
 
 # Function to generate the HTTP Nginx configuration
 generate_nginx_config() {
