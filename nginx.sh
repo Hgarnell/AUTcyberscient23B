@@ -14,20 +14,20 @@ generate_nginx_config() {
     cat <<EOF > /root/AUTcyberscient23B/conf.d/default.conf
 server {
     listen 80;
-    server_name kiwibytesolution555.info;
+    server_name $DOMAIN_NAME;
     # Redirect all HTTP requests to HTTPS
     location / {
-        return 301 https://$host$request_uri;
+        return 301 https://\$host\$request_uri;
     }
 }
 
 server {
     listen 443 ssl;
-    server_name kiwibytesolution555.info;
+    server_name $DOMAIN_NAME;
     
     # SSL certificate settings
-    ssl_certificate /etc/nginx/ssl/live/kiwibytesolution555.info/fullchain.pem;
-    ssl_certificate_key /etc/nginx/ssl/live/kiwibytesolution555.info/privkey.pem;
+    ssl_certificate /etc/nginx/ssl/live/$DOMAIN_NAME/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/live/$DOMAIN_NAME/privkey.pem;
     ssl_dhparam /etc/nginx/dhparam/dhparam-2048.pem;
 
     # Proxy pass settings
@@ -39,7 +39,7 @@ server {
     }
 }
 EOF
-}
+)
 
 # Generate the HTTP configuration
 generate_nginx_config
