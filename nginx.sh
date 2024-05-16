@@ -11,7 +11,7 @@ DOMAIN="$1"
 
 # Function to generate the HTTP Nginx configuration
 generate_nginx_config() {
-    cat <<EOF > /root/AUTcyberscient23B/conf.d/default.conf
+    cat <<EOF > conf.d/default.conf
 server {
     listen 80;
     server_name $DOMAIN_NAME;
@@ -33,9 +33,9 @@ server {
     # Proxy pass settings
     location / {
         proxy_pass http://autcyberscient23b_gophish_1:80;  # HTTP connection to Gophish
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
     }
 }
 EOF
@@ -45,4 +45,4 @@ EOF
 generate_nginx_config
 
 # Notify the user
-echo "Nginx configuration for ${DOMAIN} has been written to /root/AUTcyberscient23B/conf.d/default.conf"
+echo "Nginx configuration for ${DOMAIN} has been written to conf.d/default.conf"

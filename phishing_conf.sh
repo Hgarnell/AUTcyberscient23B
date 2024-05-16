@@ -11,7 +11,7 @@ DOMAIN="$1"
 
 # Function to generate the config.json configuration
 generate_config_json() {
-    cat <<EOF > /root/AUTcyberscient23B/config.json
+    cat <<EOF > config.json
 {
     "admin_server": {
         "listen_url": "0.0.0.0:3333",
@@ -33,4 +33,4 @@ EOF
 generate_config_json
 
 # Notify the user
-echo "Configuration for ${DOMAIN} has been written to /root/AUTcyberscient23B/config.json"
+echo "Configuration for ${DOMAIN} has been written to config.json"
