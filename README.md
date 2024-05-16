@@ -28,6 +28,13 @@ The variables you are loking to change are named `SERVER_HOSTNAME=example.com` a
 ### Generating key for SSL cert
 openssl dhparam -out your/file/path/dhparam/dhparam-2048.pem 2048 ( openssl dhparam -out /root/AUTcyberscient23B/dhparam/dhparam-2048.pem 2048)
 
+## Write Nginx config 
+./nginx.sh yourdomainname.com
+
+# Write Phishing cotainerr config 
+./phishing_conf.sh yourdomainname.com
+
+
 
 
 ### Build containers
@@ -35,8 +42,6 @@ After editing the variable names, you can go ahead and begin building your conta
     make build
     make start
 
-### Initialize certbot container and build cotainer 
-./configure_ssh.sh
 
 
 
