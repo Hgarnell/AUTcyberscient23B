@@ -39,7 +39,7 @@ server {
     }
 }
 EOF
-)
+}
 
 # Generate the HTTP configuration
 generate_nginx_config
