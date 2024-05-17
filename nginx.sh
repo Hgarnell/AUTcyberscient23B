@@ -17,7 +17,7 @@ server {
     server_name $DOMAIN_NAME;
     # Redirect all HTTP requests to HTTPS
     location / {
-        return 301 https://\$host\$request_uri;
+        return 301 https://$host$request_uri;
     }
 }
 
@@ -33,9 +33,9 @@ server {
     # Proxy pass settings
     location / {
         proxy_pass http://autcyberscient23b_gophish_1:80;  # HTTP connection to Gophish
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 }
 EOF
