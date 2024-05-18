@@ -13,8 +13,15 @@ DOMAIN_NAME="$1"
 generate_nginx_config() {
     cat <<EOF > conf.d/default.conf
 server {
-    listen 80;
-    server_name $DOMAIN_NAME;
+        listen 80;
+        server_name ${DOMAIN};
+        root /public_html/;
+
+        location ~ /.well-known/acme-challenge {
+            allow all;
+            root /usr/share/nginx/html/letsencrypt;
+        }
+    
     # Redirect all HTTP requests to HTTPS
     location / {
         return 301 https://$host$request_uri;
