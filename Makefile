@@ -43,9 +43,13 @@ generateOpenSSL:
 	openssl dhparam -out /root/AUTcyberscient23B/dhparam/dhparam-2048.pem 2048
 
 # target: runHttp = Runs the first script out of 2.
-runNginx_config:
-	sudo chmod u+x nginx.sh
+runHttp:
+	sudo chmod u+x http.sh
 	
 # target:runHttps = Runs the second script out of 2.
+runHttps:
+	sudo chmod u+x phishing_conf.sh
+
+# target:runPhishing_config = createsgophish config.
 runPhishing_config:
 	sudo chmod u+x phishing_conf.sh
