@@ -28,23 +28,6 @@ server {
     }
 }
 
-server {
-    listen 443 ssl;
-    server_name $DOMAIN_NAME;
-    
-    # SSL certificate settings
-    ssl_certificate /etc/nginx/ssl/live/$DOMAIN_NAME/fullchain.pem;
-    ssl_certificate_key /etc/nginx/ssl/live/$DOMAIN_NAME/privkey.pem;
-    ssl_dhparam /etc/nginx/dhparam/dhparam-2048.pem;
-
-    # Proxy pass settings
-    location / {
-        proxy_pass http://autcyberscient23b_gophish_1:80;  # HTTP connection to Gophish
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-    }
-}
 EOF
 }
 

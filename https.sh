@@ -39,3 +39,4 @@ generate_https_config
 
 # Notify the user
 echo "Nginx configuration for ${DOMAIN} has been written to conf.d/default.conf"
+docker-compose restart web
