@@ -13,6 +13,9 @@ DOMAIN_NAME="$1"
 generate_nginx_config() {
     cat <<EOF > conf.d/default.conf
 server {
+generate_http_config() {
+    cat <<EOF > conf.d/default.conf
+    server {
         listen 80;
         server_name ${DOMAIN_NAME};
         root /public_html/;
