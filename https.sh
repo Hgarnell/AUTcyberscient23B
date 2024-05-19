@@ -11,7 +11,7 @@ DOMAIN_NAME="$1"
 
 # Function to generate the HTTP Nginx configuration
 generate_https_config() {
-    cat <<EOF  conf.d/default.conf
+    cat <<EOF >> conf.d/default.conf
 
 
 server {
