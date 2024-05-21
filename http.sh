@@ -7,33 +7,35 @@ if [ $# -eq 0 ]; then
 fi
 
 # Assign the domain name to a variable
-DOMAIN="$1"
+DOMAIN_NAME="$1"
 
 # Function to generate the HTTP Nginx configuration
+generate_nginx_config() {
+    cat <<EOF > conf.d/default.conf
+server {
 generate_http_config() {
     cat <<EOF > conf.d/default.conf
     server {
         listen 80;
-        server_name ${DOMAIN};
+        server_name ${DOMAIN_NAME};
         root /public_html/;
 
         location ~ /.well-known/acme-challenge {
             allow all;
             root /usr/share/nginx/html/letsencrypt;
         }
-
-        location / {
-            return 301 https://${DOMAIN}\$request_uri;
-        }
+    
+    # Redirect all HTTP requests to HTTPS
+    location / {
+        return 301 https://\$host\$request_uri;
     }
+}
+
 EOF
 }
 
 # Generate the HTTP configuration
-generate_http_config
+generate_nginx_config
 
-#Run docker
-docker-compose up 
-
-# Restart Nginx with Docker Compose
-docker-compose restart web
+# Notify the user
+echo "Nginx configuration for ${DOMAIN} has been written to conf.d/default.conf"

@@ -49,3 +49,7 @@ runHttp:
 # target:runHttps = Runs the second script out of 2.
 runHttps:
 	sudo chmod u+x https.sh
+
+# target:runPhishing_config = createsgophish config.
+runPhishing_config:
+	sudo chmod u+x phishing_conf.sh

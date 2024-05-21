@@ -23,7 +23,7 @@ Once in your repository Directory, run the make init command.
 
 You will need to update your `docker-compose.yml` file to adjust the variable names to your server public IP address and Domain name
     nano docker-compose.yml
-The variables you are lOoking to change are named `SERVER_HOSTNAME=example.com` and `SERVER_IP` as well as `-- email` and `-d`
+The variables you are looking to change are named `SERVER_HOSTNAME=example.com` and `SERVER_IP` as well as `-- email` and `-d`
 
 ### update email accounts
 nano email-docker/src/user.txt 
@@ -68,7 +68,8 @@ To view DNS mail server information view the logs of the postfix docker containe
 ### Login to GoPhish
 To get the intial admin password for gophish view the logs for the gophish container
     docker logs autcyberscient23b_gophish_1 
-Navigate to https://0.0.0.0:3333 to view the admin console for gophish.
+Navigate to https://YOUR_DOMAIN_NAME:3333 to view the admin console for gophish.
+
 
 For further information please read the AUTcyberscient23B/Phishing awareness training document v3 FINAL.pdf documentation.
 
