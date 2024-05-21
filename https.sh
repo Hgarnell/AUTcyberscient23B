@@ -7,21 +7,11 @@ if [ $# -eq 0 ]; then
 fi
 
 # Assign the domain name to a variable
-DOMAIN="$1"
+DOMAIN_NAME="$1"
 
-# Check if initial conifg is there
-
-config_file="conf.d/default.conf"
-if [ -f "$config_file" ]; then
-    echo "The configuration file already exists. Appending configuration."
-else
-    echo "Generating new configuration."
-fi
-
-
-# Function to generate the HTTPS Nginx configuration
+# Function to generate the HTTP Nginx configuration
 generate_https_config() {
-    cat <<EOF 
+    cat <<EOF > /root/AUTcyberscient23B/conf.d/default.conf
     server {
         listen 443 ssl http2;
         server_name ${DOMAIN};
@@ -48,7 +38,8 @@ EOF
 new_config=$(generate_https_config)
 
 # Generate the HTTPS configuration
-echo "$new_config" | sudo tee -a "$config_file" > /dev/null
+generate_https_config
 
-# Restart Nginx again to apply HTTPS configuration
+# Notify the user
+echo "Nginx configuration for ${DOMAIN} has been written to conf.d/default.conf"
 docker-compose restart web

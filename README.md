@@ -23,10 +23,21 @@ Once in your repository Directory, run the make init command.
 
 You will need to update your `docker-compose.yml` file to adjust the variable names to your server public IP address and Domain name
     nano docker-compose.yml
-The variables you are loking to change are named `SERVER_HOSTNAME=example.com` and `SERVER_IP`
+The variables you are looking to change are named `SERVER_HOSTNAME=example.com` and `SERVER_IP`
 
 ### Generating key for SSL cert
 openssl dhparam -out your/file/path/dhparam/dhparam-2048.pem 2048 ( openssl dhparam -out /root/AUTcyberscient23B/dhparam/dhparam-2048.pem 2048)
+
+## Write http config 
+make  runHttp
+./http.sh yourdomainname.com
+make  runHttps
+./https.sh yourdomainname.com
+
+# Write Phishing cotainerr config 
+make  runPhishing_config
+./phishing_conf.sh yourdomainname.com
+
 
 
 
@@ -35,8 +46,6 @@ After editing the variable names, you can go ahead and begin building your conta
     make build
     make start
 
-### Initialize certbot container and build cotainer 
-./configure_ssh.sh
 
 
 
@@ -52,7 +61,7 @@ To view DNS mail server information view the logs of the postfix docker containe
 ### Login to GoPhish
 To get the intial admin password for gophish view the logs for the gophish container
     docker logs autcyberscient23b_gophish_1 
-Navigate to https://0.0.0.0:3333 to view the admin console for gophish.
+Navigate to https://YOUR_DOMAIN_NAME:3333 to view the admin console for gophish.
 
     
 
