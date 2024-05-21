@@ -23,21 +23,37 @@ Once in your repository Directory, run the make init command.
 
 You will need to update your `docker-compose.yml` file to adjust the variable names to your server public IP address and Domain name
     nano docker-compose.yml
-The variables you are loking to change are named `SERVER_HOSTNAME=example.com` and `SERVER_IP`
+The variables you are lOoking to change are named `SERVER_HOSTNAME=example.com` and `SERVER_IP` as well as `-- email` and `-d`
+
+### update email accounts
+nano email-docker/src/user.txt 
+
+### Set GoPhish config file
+make runPhishing_config 
+
+./phishing_conf.sh YOUR_DOMAIN.COM 
+### Build containers
+After editing the variable names, you can go ahead and begin building your containers with the make build command.
+    make build
 
 ### Generating key for SSL cert
-openssl dhparam -out your/file/path/dhparam/dhparam-2048.pem 2048 ( openssl dhparam -out /root/AUTcyberscient23B/dhparam/dhparam-2048.pem 2048)
+make generateOpenSSL
 
+### Start http
+ make runHttp 
 
+./http.sh YOUR_DOMAIN.COM 
 
-### Build containers
-After editing the variable names, you can go ahead and begin building your containers with the make build command, followed with the make start command.
-    make build
+### Run the command to the docker containers. 
+ make start 
+
+### start https
+make runHttps 
+
+./http.sh YOUR_DOMAIN.COM 
+
+## start containers
     make start
-
-### Initialize certbot container and build cotainer 
-./configure_ssh.sh
-
 
 
 ### Check if containers are runnings
@@ -54,7 +70,7 @@ To get the intial admin password for gophish view the logs for the gophish conta
     docker logs autcyberscient23b_gophish_1 
 Navigate to https://0.0.0.0:3333 to view the admin console for gophish.
 
-    
+For further information please read the AUTcyberscient23B/Phishing awareness training document v3 FINAL.pdf documentation.
 
 This repo was help created by using the following resources
 https://github.com/gophish/gophish
