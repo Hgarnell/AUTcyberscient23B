@@ -2,7 +2,7 @@
 
 # Check if a domain name is provided as an argument
 if [ $# -eq 0 ]; then
-    echo "Usage: $0 [DOMAIN_NAME]"
+    echo "Usage: $0 [domain_name]"
     exit 1
 fi
 
