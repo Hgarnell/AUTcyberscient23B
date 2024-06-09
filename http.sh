@@ -2,7 +2,7 @@
 
 # Check if a domain name is provided as an argument
 if [ $# -eq 0 ]; then
-    echo "Usage: $0 [domain_name]"
+    echo "Usage: $0 [DOMAIN_NAME]"
     exit 1
 fi
 
@@ -13,21 +13,20 @@ DOMAIN_NAME="$1"
 generate_nginx_config() {
     cat <<EOF > conf.d/default.conf
 server {
-        listen 80;
-        server_name ${DOMAIN_NAME};
-        root /public_html/;
+    listen 80;
+    server_name ${DOMAIN_NAME};
+    root /public_html/;
 
-        location ~ /.well-known/acme-challenge {
-            allow all;
-            root /usr/share/nginx/html/letsencrypt;
-        }
-    
+    location ~ /.well-known/acme-challenge {
+        allow all;
+        root /usr/share/nginx/html/letsencrypt;
+    }
+
     # Redirect all HTTP requests to HTTPS
     location / {
         return 301 https://\$host\$request_uri;
     }
 }
-
 EOF
 }
 
@@ -35,4 +34,4 @@ EOF
 generate_nginx_config
 
 # Notify the user
-echo "Nginx configuration for ${DOMAIN} has been written to conf.d/default.conf"
+echo "Nginx configuration for ${DOMAIN_NAME} has been written to conf.d/default.conf"
